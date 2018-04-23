@@ -4,12 +4,6 @@ parameters:
     siphoc_pdf.binary: '/usr/local/bin/wkhtmltopdf'
 
 services:
-    buzz.request:
-        class: Buzz\Message\Request
-
-    buzz.response:
-        class: Buzz\Message\Response
-
     buzz.client:
         class: Buzz\Client\FileGetContents
 
@@ -19,7 +13,7 @@ services:
 
     siphoc.buzz_request_handler:
         class: Siphoc\PdfBundle\Util\BuzzRequestHandler
-        arguments: [ '@buzz.request', '@buzz.response', '@buzz.client' ]
+        arguments: [ '@buzz.client' ]
 
     siphoc.pdf.css_to_html:
         class: Siphoc\PdfBundle\Converter\CssToHTML

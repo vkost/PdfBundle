@@ -9,9 +9,10 @@
 
 namespace Siphoc\PdfBundle\Util;
 
-use Buzz\Client\ClientInterface;
-use Buzz\Message\MessageInterface;
-use Siphoc\PdfBundle\Util\RequestHandlerInterface;
+use Buzz\Client\BuzzClientInterface;
+use Psr\Http\Client\ClientException;
+use Buzz\Client\FileGetContents;
+use Nyholm\Psr7\Request as PSR7Request;
 
 /**
  * The handler that we'll use to get external files from other servers.
@@ -21,23 +22,9 @@ use Siphoc\PdfBundle\Util\RequestHandlerInterface;
 class BuzzRequestHandler implements RequestHandlerInterface
 {
     /**
-     * The request object we'll be using to do HTTP calls.
-     *
-     * @var MessageInterface
-     */
-    protected $request;
-
-    /**
-     * The response object we'll be using to store our response data in.
-     *
-     * @var MessageInterface
-     */
-    protected $response;
-
-    /**
      * The client object we'll be using to do our actuall calls.
      *
-     * @var ClientInterface
+     * @var BuzzClientInterface
      */
     protected $client;
 
@@ -45,22 +32,17 @@ class BuzzRequestHandler implements RequestHandlerInterface
      * Initiate the Request handler with a Request, Response and Client
      * interface.
      *
-     * @param MessageInterface $request
-     * @param MessageInterface $response
-     * @param ClientInterface  $client
+     * @param BuzzClientInterface  $client
      */
-    public function __construct(MessageInterface $request,
-        MessageInterface $response, ClientInterface $client)
+    public function __construct(BuzzClientInterface $client)
     {
-        $this->request = $request;
-        $this->response = $response;
         $this->client = $client;
     }
 
     /**
      * Fetch the Client object we're using to do requests.
      *
-     * @return MessageInterface
+     * @return BuzzClientInterface
      */
     public function getClient()
     {
@@ -72,35 +54,14 @@ class BuzzRequestHandler implements RequestHandlerInterface
      *
      * @param  string $url
      * @return string
+     * @throws ClientException
      */
     public function getContent($url)
     {
-        $this->getRequest()->setHost($url);
-        $this->getClient()->send(
-            $this->getRequest(),
-            $this->getResponse()
-        );
+        $request = new PSR7Request('GET', $url);
 
-        return $this->getResponse()->getContent();
-    }
-
-    /**
-     * Fetch the Response object we're using to do requests.
-     *
-     * @return MessageInterface
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * Fetch the Request object we're using to do requests.
-     *
-     * @return MessageInterface
-     */
-    public function getRequest()
-    {
-        return $this->request;
+        $client = new FileGetContents();
+        $response = $client->sendRequest($request, ['timeout' => 4]);
+        return $response->getBody();
     }
 }
