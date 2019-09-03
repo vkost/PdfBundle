@@ -53,10 +53,7 @@ class SiphocPdfExtension extends Extension
 
         $container->setDefinition(
             'siphoc.pdf.generator',
-            new Definition(
-                'Siphoc\PdfBundle\Generator\PdfGenerator',
-                $definition
-            )
+            $definition
         );
     }
 }
