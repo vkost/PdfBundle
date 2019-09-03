@@ -39,17 +39,23 @@ class SiphocPdfExtension extends Extension
             $cssConverter = 'siphoc.pdf.css_path_to_url';
         }
 
+        $definition = new Definition(
+            'Siphoc\PdfBundle\Generator\PdfGenerator',
+            array(
+                new Reference($cssConverter),
+                new Reference($jsConverter),
+                new Reference('knp.snappy.pdf'),
+                new Reference('templating'),
+                new Reference('logger'),
+            )
+        );
+        $definition->setPublic(true);
+
         $container->setDefinition(
             'siphoc.pdf.generator',
             new Definition(
                 'Siphoc\PdfBundle\Generator\PdfGenerator',
-                array(
-                    new Reference($cssConverter),
-                    new Reference($jsConverter),
-                    new Reference('knp.snappy.pdf'),
-                    new Reference('templating'),
-                    new Reference('logger'),
-                )
+                $definition
             )
         );
     }
