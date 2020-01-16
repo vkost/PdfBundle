@@ -4,6 +4,9 @@ parameters:
     siphoc_pdf.binary: '/usr/local/bin/wkhtmltopdf'
 
 services:
+    Siphoc\PdfBundle\Generator\PdfGenerator:
+        alias: siphoc.pdf.generator
+
     buzz.client:
         class: Buzz\Client\FileGetContents
 
