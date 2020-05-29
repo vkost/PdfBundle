@@ -1,11 +1,16 @@
 parameters:
     siphoc_pdf.basepath: ~
     siphoc_pdf.options: []
+    siphoc_pdf.image_options: []
     siphoc_pdf.binary: '/usr/local/bin/wkhtmltopdf'
+    siphoc_pdf.image_binary: '/usr/local/bin/wkhtmltoimage'
 
 services:
     Siphoc\PdfBundle\Generator\PdfGenerator:
         alias: siphoc.pdf.generator
+
+    Siphoc\PdfBundle\Generator\ImageGenerator:
+        alias: siphoc.image.generator
 
     buzz.client:
         class: Buzz\Client\FileGetContents
@@ -13,6 +18,10 @@ services:
     knp.snappy.pdf:
         class: Knp\Snappy\Pdf
         arguments: [ '%siphoc_pdf.binary%', '%siphoc_pdf.options%' ]
+
+    knp.snappy.image:
+        class: Knp\Snappy\Image
+        arguments: [ '%siphoc_pdf.image_binary%', '%siphoc_pdf.image_options%' ]
 
     siphoc.buzz_request_handler:
         class: Siphoc\PdfBundle\Util\BuzzRequestHandler

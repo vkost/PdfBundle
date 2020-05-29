@@ -29,7 +29,9 @@ class SiphocPdfExtension extends Extension
 
         $container->setParameter('siphoc_pdf.basepath', $config['basepath']);
         $container->setParameter('siphoc_pdf.binary', $config['binary']);
-        $container->setPArameter('siphoc_pdf.options', $config['options']);
+        $container->setParameter('siphoc_pdf.image_binary', $config['image_binary']);
+        $container->setParameter('siphoc_pdf.options', $config['options']);
+        $container->setParameter('siphoc_pdf.image_options', $config['image_options']);
 
         $jsConverter = 'siphoc.pdf.js_to_html';
 
@@ -53,6 +55,23 @@ class SiphocPdfExtension extends Extension
 
         $container->setDefinition(
             'siphoc.pdf.generator',
+            $definition
+        );
+
+        $definition = new Definition(
+            'Siphoc\PdfBundle\Generator\ImageGenerator',
+            array(
+                new Reference($cssConverter),
+                new Reference($jsConverter),
+                new Reference('knp.snappy.image'),
+                new Reference('templating'),
+                new Reference('logger'),
+            )
+        );
+        $definition->setPublic(true);
+
+        $container->setDefinition(
+            'siphoc.image.generator',
             $definition
         );
     }
