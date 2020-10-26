@@ -12,8 +12,12 @@ services:
     Siphoc\PdfBundle\Generator\ImageGenerator:
         alias: siphoc.image.generator
 
+    nyholm.psr17.factory:
+        class: Nyholm\Psr7\Factory\Psr17Factory
+
     buzz.client:
         class: Buzz\Client\FileGetContents
+        arguments: [ '@nyholm.psr17.factory' ]
 
     knp.snappy.pdf:
         class: Knp\Snappy\Pdf
