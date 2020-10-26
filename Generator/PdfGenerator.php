@@ -13,7 +13,7 @@ use Knp\Snappy\GeneratorInterface;
 use Siphoc\PdfBundle\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * The actual PDF Generator that'll transform a view into a proper PDF.
@@ -53,7 +53,7 @@ class PdfGenerator implements GeneratorInterface
     /**
      * The template engine we'll use to process our views.
      *
-     * @var EngineInterface
+     * @var Environment
      */
     protected $templateEngine;
 
@@ -63,12 +63,12 @@ class PdfGenerator implements GeneratorInterface
      * @param ConverterInterface $cssToHTML
      * @param ConverterInterface $jsToHTML
      * @param GeneratorInterface $generator
-     * @param EngineInterface    $templateEngine
+     * @param Environment    $templateEngine
      * @param LoggerInterface $logger
      */
     public function __construct(ConverterInterface $cssToHTML,
         ConverterInterface $jsToHTML, GeneratorInterface $generator,
-        EngineInterface $templateEngine, LoggerInterface $logger = null)
+        Environment $templateEngine, LoggerInterface $logger = null)
     {
         $this->cssToHTML = $cssToHTML;
         $this->jsToHTML = $jsToHTML;
@@ -100,7 +100,7 @@ class PdfGenerator implements GeneratorInterface
     /**
      * Retrieve the templating engine.
      *
-     * @return EngineInterface
+     * @return Environment
      */
     public function getTemplatingEngine()
     {
