@@ -26,8 +26,8 @@ class Configuration implements ConfigurationInterface
             return $fixedOptions;
         };
 
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('siphoc_pdf');
+        $treeBuilder = new TreeBuilder('siphoc_pdf');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode->children()
             ->scalarNode('binary')->defaultValue('wkhtmltopdf')->end()
