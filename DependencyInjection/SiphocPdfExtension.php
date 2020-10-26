@@ -47,7 +47,7 @@ class SiphocPdfExtension extends Extension
                 new Reference($cssConverter),
                 new Reference($jsConverter),
                 new Reference('knp.snappy.pdf'),
-                new Reference('templating'),
+                new Reference('twig'),
                 new Reference('logger'),
             )
         );
@@ -64,7 +64,7 @@ class SiphocPdfExtension extends Extension
                 new Reference($cssConverter),
                 new Reference($jsConverter),
                 new Reference('knp.snappy.image'),
-                new Reference('templating'),
+                new Reference('twig'),
                 new Reference('logger'),
             )
         );
